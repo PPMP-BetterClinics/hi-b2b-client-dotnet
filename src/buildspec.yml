@@ -1,0 +1,77 @@
+version: 0.2
+
+env:
+  variables:
+    DOTNET_ROOT: /usr/share/dotnet
+    DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+phases:
+  install:
+    runtime-versions:
+      dotnet: 8.0
+    commands:
+      - echo "Installing dependencies..."
+      - dotnet tool install -g Amazon.Lambda.Tools
+
+  pre_build:
+    commands:
+      - echo "Restoring NuGet packages..."
+      - dotnet restore
+
+  build:
+    commands:
+      - echo "Building projects in dependency order..."
+      
+      # Build Project 1: HI (Base DLL - no dependencies)
+      - echo "Building HI project..."
+      - dotnet build ./HI/HI.csproj --configuration Release --no-restore
+      
+      # Build Project 2: HI.BetterClinics.HelperFunctions (depends on HI)
+      - echo "Building HI.BetterClinics.HelperFunctions project..."
+      - dotnet build ./HI.BetterClinics.HelperFunctions/HI.BetterClinics.HelperFunctions.csproj --configuration Release --no-restore
+      
+      # Build Projects 3, 4, 5: Lambda functions (all depend on HI and HelperFunctions)
+      - echo "Building HI.BetterClinics.Consumer project..."
+      - dotnet build ./HI.BetterClinics.Consumer/HI.BetterClinics.Consumer.csproj --configuration Release --no-restore
+      
+      - echo "Building HI.BetterClinics.Provider project..."
+      - dotnet build ./HI.BetterClinics.Provider/HI.BetterClinics.Provider.csproj --configuration Release --no-restore
+      
+      - echo "Building HI.BetterClinics.Organisation project..."
+      - dotnet build ./HI.BetterClinics.Organisation/HI.BetterClinics.Organisation.csproj --configuration Release --no-restore
+      
+      # Package Lambda functions
+      - echo "Packaging Lambda functions..."
+      
+      # Package Consumer Lambda
+      - cd ./HI.BetterClinics.Consumer
+      - dotnet lambda package --configuration Release --framework net8.0 --output-package ../HI-Consumer.zip
+      - cd ..
+      
+      # Package Provider Lambda
+      - cd ./HI.BetterClinics.Provider
+      - dotnet lambda package --configuration Release --framework net8.0 --output-package ../HI-Provider.zip
+      - cd ..
+      
+      # Package Organisation Lambda
+      - cd ./HI.BetterClinics.Organisation
+      - dotnet lambda package --configuration Release --framework net8.0 --output-package ../HI-Organisation.zip
+      - cd ..
+
+  post_build:
+    commands:
+      - echo "Build completed successfully"
+      - echo "Generated Lambda packages:"
+      - ls -la *.zip
+
+artifacts:
+  files:
+    - HI-Consumer.zip
+    - HI-Provider.zip
+    - HI-Organisation.zip
+    - HI/bin/Release/**/*
+    - HI.BetterClinics.HelperFunctions/bin/Release/**/*
+    - HI.BetterClinics.Consumer/bin/Release/**/*
+    - HI.BetterClinics.Provider/bin/Release/**/*
+    - HI.BetterClinics.Organisation/bin/Release/**/*
+  name: BuildArtifacts
