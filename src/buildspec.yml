@@ -62,7 +62,7 @@ phases:
     commands:
       - echo "Build completed successfully"
       - echo "Generated Lambda packages:"
-      - ls -la *.zip
+      - dir *.zip
 
 artifacts:
   files:
