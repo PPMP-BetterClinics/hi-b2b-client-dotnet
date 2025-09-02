@@ -70,7 +70,7 @@ namespace HI.BetterClinics.Provider
                 // Validate that essential parameters are provided.
                 if (string.IsNullOrWhiteSpace(internalMode))
                 {
-                    return clsHelper.FormatOutput(FunctionName, "FAILURE", "ERROR", "PARAM", "Input Parameters - Missing or empty internalMode.", null, context);
+                    return clsHelper.FormatOutput(FunctionName, "FAILURE", "ERROR", "PARAM", "Input Parameters - Missing or empty internalModeB.", null, context);
                 }
 
                 if (string.IsNullOrWhiteSpace(internalUserId))
