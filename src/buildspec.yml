@@ -41,7 +41,3 @@ phases:
       - dotnet lambda deploy-function hi-provider --project-location src/HI.BetterClinics.Provider/src/HI.BetterClinics.Provider
       - echo "Publishing HI.BetterClinics.Organisation to Lambda function Hi-Organisation..."
       - dotnet lambda deploy-function hi-organisation --project-location src/HI.BetterClinics.Organisation/src/HI.BetterClinics.Organisation
-
-artifacts:
-  files:
-    - '**/*'
