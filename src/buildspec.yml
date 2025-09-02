@@ -1,0 +1,43 @@
+version: 0.2
+
+env:
+  variables:
+    DOTNET_ROOT: /root/.dotnet
+
+phases:
+  install:
+    runtime-versions:
+      dotnet: 8.0
+    commands:
+      - echo "Installing AWS Lambda .NET tools..."
+      - dotnet tool install -g Amazon.Lambda.Tools
+      - $env:PATH += ";C:\Users\ContainerAdministrator\.dotnet\tools"
+      - echo "Tools installed."
+  pre_build:
+    commands:
+      - echo "Restoring NuGet packages for all projects..."
+      - dotnet restore src/HI/HI.csproj
+      - dotnet restore src/HI.BetterClinics.HelperFunctions/HI.BetterClinics.HelperFunctions.csproj
+      - dotnet restore src/HI.BetterClinics.Consumer/src/HI.BetterClinics.Consumer/HI.BetterClinics.Consumer.csproj
+      - dotnet restore src/HI.BetterClinics.Provider/src/HI.BetterClinics.Provider/HI.BetterClinics.Provider.csproj
+      - dotnet restore src/HI.BetterClinics.Organisation/src/HI.BetterClinics.Organisation/HI.BetterClinics.Organisation.csproj
+  build:
+    commands:
+      - echo "Building HI project..."
+      - dotnet build src/HI/HI.csproj --configuration Release
+      - echo "Building HI.BetterClinics.HelperFunctions project..."
+      - dotnet build src/HI.BetterClinics.HelperFunctions/HI.BetterClinics.HelperFunctions.csproj --configuration Release
+      - echo "Building HI.BetterClinics.Consumer project..."
+      - dotnet build src/HI.BetterClinics.Consumer/src/HI.BetterClinics.Consumer/HI.BetterClinics.Consumer.csproj --configuration Release
+      - echo "Building HI.BetterClinics.Provider project..."
+      - dotnet build src/HI.BetterClinics.Provider/src/HI.BetterClinics.Provider/HI.BetterClinics.Provider.csproj --configuration Release
+      - echo "Building HI.BetterClinics.Organisation project..."
+      - dotnet build src/HI.BetterClinics.Organisation/src/HI.BetterClinics.Organisation/HI.BetterClinics.Organisation.csproj --configuration Release
+  post_build:
+    commands:
+      - echo "Publishing HI.BetterClinics.Consumer to Lambda function Hi-Consumer..."
+      - dotnet lambda deploy-function hi-consumer --project-location src/HI.BetterClinics.Consumer/src/HI.BetterClinics.Consumer
+      - echo "Publishing HI.BetterClinics.Provider to Lambda function Hi-Provider..."
+      - dotnet lambda deploy-function hi-provider --project-location src/HI.BetterClinics.Provider/src/HI.BetterClinics.Provider
+      - echo "Publishing HI.BetterClinics.Organisation to Lambda function Hi-Organisation..."
+      - dotnet lambda deploy-function hi-organisation --project-location src/HI.BetterClinics.Organisation/src/HI.BetterClinics.Organisation
