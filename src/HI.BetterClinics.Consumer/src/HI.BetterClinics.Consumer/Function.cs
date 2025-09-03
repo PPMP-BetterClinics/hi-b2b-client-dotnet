@@ -758,7 +758,15 @@ namespace HI.BetterClinics.Consumer
                 DateTime.TryParse(dobElem.GetString(), out var dob))
             {
                 request.dateOfBirth = dob;
-                request.dateOfBirthAccuracyIndicator = nehta.mcaR3.ConsumerCreateProvisionalIHI.DateAccuracyIndicatorType.AAA;
+                //request.dateOfBirthAccuracyIndicator = nehta.mcaR3.ConsumerCreateProvisionalIHI.DateAccuracyIndicatorType.AAA;
+            }
+
+            // Safely parse and set the date of birth accurracy indicator provided.
+            if (root.TryGetProperty("dateOfBirthAccuracyIndicatorField", out var dobAccuracyIndicatorElem) &&
+                dobAccuracyIndicatorElem.ValueKind == JsonValueKind.String &&
+                Enum.TryParse<nehta.mcaR3.ConsumerCreateProvisionalIHI.DateAccuracyIndicatorType>(dobAccuracyIndicatorElem.GetString(), true, out var dobAccuracyIndicatorEnum))
+            {
+                request.dateOfBirthAccuracyIndicator = dobAccuracyIndicatorEnum;
             }
 
             return request;
