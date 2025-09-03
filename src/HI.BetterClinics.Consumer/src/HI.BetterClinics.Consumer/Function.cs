@@ -758,7 +758,6 @@ namespace HI.BetterClinics.Consumer
                 DateTime.TryParse(dobElem.GetString(), out var dob))
             {
                 request.dateOfBirth = dob;
-                //request.dateOfBirthAccuracyIndicator = nehta.mcaR3.ConsumerCreateProvisionalIHI.DateAccuracyIndicatorType.AAA;
             }
 
             // Safely parse and set the date of birth accurracy indicator provided.
@@ -823,7 +822,14 @@ namespace HI.BetterClinics.Consumer
                 DateTime.TryParse(dobElem.GetString(), out var dob))
             {
                 request.individualHealthcareIdentity.dateOfBirth = dob;
-                request.individualHealthcareIdentity.dateOfBirthAccuracyIndicator = nehta.mcaR302.ConsumerCreateUnverifiedIHI.DateAccuracyIndicatorType.AAA;
+            }
+
+            // Safely parse and set the date of birth accurracy indicator provided.
+            if (root.TryGetProperty("dateOfBirthAccuracyIndicatorField", out var dobAccuracyIndicatorElem) &&
+                dobAccuracyIndicatorElem.ValueKind == JsonValueKind.String &&
+                Enum.TryParse<nehta.mcaR302.ConsumerCreateUnverifiedIHI.DateAccuracyIndicatorType>(dobAccuracyIndicatorElem.GetString(), true, out var dobAccuracyIndicatorEnum))
+            {
+                request.individualHealthcareIdentity.dateOfBirthAccuracyIndicator = dobAccuracyIndicatorEnum;
             }
 
             // Safely parse and set the sex if provided.
@@ -875,9 +881,16 @@ namespace HI.BetterClinics.Consumer
                 DateTime.TryParse(dobElem.GetString(), out var dob))
             {
                 request.dateOfBirth = dob;
-                request.dateOfBirthAccuracyIndicator = nehta.mcaR3.ConsumerUpdateProvisionalIHI.DateAccuracyIndicatorType.AAA;
             }
-            
+
+            // Safely parse and set the date of birth accurracy indicator provided.
+            if (root.TryGetProperty("dateOfBirthAccuracyIndicatorField", out var dobAccuracyIndicatorElem) &&
+                dobAccuracyIndicatorElem.ValueKind == JsonValueKind.String &&
+                Enum.TryParse<nehta.mcaR3.ConsumerUpdateProvisionalIHI.DateAccuracyIndicatorType>(dobAccuracyIndicatorElem.GetString(), true, out var dobAccuracyIndicatorEnum))
+            {
+                request.dateOfBirthAccuracyIndicator = dobAccuracyIndicatorEnum;
+            }
+
             return request;
         }
         /// <summary>
@@ -957,7 +970,14 @@ namespace HI.BetterClinics.Consumer
             {
                 request.dateOfBirth = dob;
                 request.dateOfBirthSpecified = true;
-                request.dateOfBirthAccuracyIndicator = nehta.mcaR32.ConsumerUpdateIHI.DateAccuracyIndicatorType.AAA;
+            }
+
+            // Safely parse and set the date of birth accurracy indicator provided.
+            if (root.TryGetProperty("dateOfBirthAccuracyIndicatorField", out var dobAccuracyIndicatorElem) &&
+                dobAccuracyIndicatorElem.ValueKind == JsonValueKind.String &&
+                Enum.TryParse<nehta.mcaR32.ConsumerUpdateIHI.DateAccuracyIndicatorType>(dobAccuracyIndicatorElem.GetString(), true, out var dobAccuracyIndicatorEnum))
+            {
+                request.dateOfBirthAccuracyIndicator = dobAccuracyIndicatorEnum;
                 request.dateOfBirthAccuracyIndicatorSpecified = true;
             }
 
@@ -1040,7 +1060,14 @@ namespace HI.BetterClinics.Consumer
                 DateTime.TryParse(dobElem.GetString(), out var dob))
             {
                 request.dateOfBirth = dob;
-                request.dateOfBirthAccuracyIndicator = nehta.mcaR302.ConsumerResolveProvisionalIHI.DateAccuracyIndicatorType.AAA;
+            }
+
+            // Safely parse and set the date of birth accurracy indicator provided.
+            if (root.TryGetProperty("dateOfBirthAccuracyIndicatorField", out var dobAccuracyIndicatorElem) &&
+                dobAccuracyIndicatorElem.ValueKind == JsonValueKind.String &&
+                Enum.TryParse<nehta.mcaR302.ConsumerResolveProvisionalIHI.DateAccuracyIndicatorType>(dobAccuracyIndicatorElem.GetString(), true, out var dobAccuracyIndicatorEnum))
+            {
+                request.dateOfBirthAccuracyIndicator = dobAccuracyIndicatorEnum;
             }
 
             // Safely parse and set the sex if provided.
@@ -1167,7 +1194,14 @@ namespace HI.BetterClinics.Consumer
                 DateTime.TryParse(dobElem.GetString(), out var dob))
             {
                 request.dateOfBirth = dob;
-                request.dateOfBirthAccuracyIndicator = nehta.mcaR40.CreateVerifiedIHI.DateAccuracyIndicatorType.AAA;
+            }
+
+            // Safely parse and set the date of birth accurracy indicator provided.
+            if (root.TryGetProperty("dateOfBirthAccuracyIndicatorField", out var dobAccuracyIndicatorElem) &&
+                dobAccuracyIndicatorElem.ValueKind == JsonValueKind.String &&
+                Enum.TryParse<nehta.mcaR40.CreateVerifiedIHI.DateAccuracyIndicatorType>(dobAccuracyIndicatorElem.GetString(), true, out var dobAccuracyIndicatorEnum))
+            {
+                request.dateOfBirthAccuracyIndicator = dobAccuracyIndicatorEnum;
             }
 
             // Safely parse and set the sex if provided.
