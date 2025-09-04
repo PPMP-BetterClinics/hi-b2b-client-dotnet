@@ -36,8 +36,8 @@ phases:
   post_build:
     commands:
       - echo "Publishing HI.BetterClinics.Consumer to Lambda function Hi-Consumer..."
-      - dotnet lambda deploy-function hi-consumer --project-location src/HI.BetterClinics.Consumer/src/HI.BetterClinics.Consumer
+      - dotnet lambda deploy-function hi-consumer --project-location src/HI.BetterClinics.Consumer/src/HI.BetterClinics.Consumer --region $AWS_REGION --function-role $AWS_FUNCTION_ROLE --function-memory-size $AWS_FUNCTION_MEMORY --function-timeout $AWS_FUNCTION_TIMEOUT
       - echo "Publishing HI.BetterClinics.Provider to Lambda function Hi-Provider..."
-      - dotnet lambda deploy-function hi-provider --project-location src/HI.BetterClinics.Provider/src/HI.BetterClinics.Provider
+      - dotnet lambda deploy-function hi-provider --project-location src/HI.BetterClinics.Provider/src/HI.BetterClinics.Provider --region $AWS_REGION --function-role $AWS_FUNCTION_ROLE --function-memory-size $AWS_FUNCTION_MEMORY --function-timeout $AWS_FUNCTION_TIMEOUT
       - echo "Publishing HI.BetterClinics.Organisation to Lambda function Hi-Organisation..."
-      - dotnet lambda deploy-function hi-organisation --project-location src/HI.BetterClinics.Organisation/src/HI.BetterClinics.Organisation
+      - dotnet lambda deploy-function hi-organisation --project-location src/HI.BetterClinics.Organisation/src/HI.BetterClinics.Organisation --region $AWS_REGION --function-role $AWS_FUNCTION_ROLE --function-memory-size $AWS_FUNCTION_MEMORY --function-timeout $AWS_FUNCTION_TIMEOUT
